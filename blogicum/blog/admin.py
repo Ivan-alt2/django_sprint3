@@ -35,7 +35,12 @@ class PostAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     """Админка для категорий."""
 
-    list_display = ('title', 'description_preview', 'is_published', 'created_at')
+    list_display = (
+        'title',
+        'description_preview',
+        'is_published',
+        'created_at',
+    )
     search_fields = ('title', 'description')
     list_filter = ('is_published',)
     list_editable = ('is_published',)
