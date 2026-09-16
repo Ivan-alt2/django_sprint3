@@ -4,15 +4,10 @@ from django.utils import timezone
 
 from blog.models import Post, Category
 
-# Константы
 POSTS_PER_PAGE = 5
 
 
 def get_published_posts(posts: QuerySet | None = None) -> QuerySet:
-    """
-    Возвращает опубликованные посты с выбранными связанными объектами 
-    для оптимизации запросов к БД.
-    """
     if posts is None:
         posts = Post.objects.all()
 
