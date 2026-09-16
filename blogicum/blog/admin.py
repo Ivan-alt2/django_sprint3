@@ -1,32 +1,54 @@
 from django.contrib import admin
 
-
 from .models import Category, Post, Location
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    """PostAdmin."""
+    """Админка для публикаций."""
 
     list_display = (
         'title',
-        'text',
         'author',
         'pub_date',
         'location',
         'category',
         'is_published',
-        'created_at'
+        'created_at',
     )
-    list_editable = (
-        'text',
-        'category'
-    )
+    list_editable = ('category',)
+    
     search_fields = ('title', 'text')
-    list_filter = ('category', 'author')
+    list_filter = ('category', 'author', 'is_published', 'location')
     list_display_links = ('title',)
-    empty_value_display = 'Не задано'
+    empty_value_display = '-пусто-'
+    autocomplete_fields = ('author', 'location', 'category')  # Удобно при большом количестве связей
+    date_hierarchy = 'pub_date'  # Навигация по датам публикации
 
 
-admin.site.register(Category)
-admin.site.register(Location)
-admin.site.register(Post, PostAdmin)
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    """Админка для категорий."""
+
+    list_display = ('title', 'description_preview', 'is_published', 'created_at')
+    search_fields = ('title', 'description')
+    list_filter = ('is_published',)
+    list_editable = ('is_published',)
+    empty_value_display = '-пусто-'
+    prepopulated_fields = {"slug": ("title",)}  # Автозаполнение slug на основе заголовка
+
+    def description_preview(self, obj):
+        """Обрезанное описание для списка (до 40 символов)."""
+        return (obj.description[:40] + '...') if len(obj.description) > 40 else obj.description
+    description_preview.short_description = 'Описание'
+
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    """Админка для местоположений."""
+
+    list_display = ('name', 'is_published', 'created_at')
+    search_fields = ('name',)
+    list_filter = ('is_published',)
+    list_editable = ('is_published',)
+    empty_value_display = '-пусто-'
