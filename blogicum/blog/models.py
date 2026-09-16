@@ -24,14 +24,14 @@ class Category(TimestampModel):
     title = models.CharField('Заголовок', max_length=256)
     description = models.TextField('Описание')
     slug = models.SlugField(
-        'Идентификатор',
-        max_length=64,
-        unique=True,
-        help_text=(
-            'Идентификатор страницы для URL; разрешены символы '
-            'латиницы, цифры, дефис и подчёркивание.'
-        )
+    'Идентификатор',
+    max_length=64,
+    unique=True,
+    help_text=(
+        'Идентификатор страницы для URL; разрешены символы '
+        'латиницы, цифры, дефис и подчёркивание.'
     )
+)
 
     class Meta:
         verbose_name = 'категория'
