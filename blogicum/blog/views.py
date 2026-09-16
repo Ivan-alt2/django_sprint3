@@ -8,6 +8,10 @@ POSTS_PER_PAGE = 5
 
 
 def get_published_posts(posts: QuerySet | None = None) -> QuerySet:
+    """
+    Возвращает опубликованные посты с выбранными связанными объектами 
+    для оптимизации запросов к БД.
+    """
     if posts is None:
         posts = Post.objects.all()
 
@@ -21,7 +25,6 @@ def get_published_posts(posts: QuerySet | None = None) -> QuerySet:
 
 
 def index(request):
-    """Главная страница со списком последних публикаций."""
     return render(
         request, 
         'blog/index.html',
@@ -30,7 +33,6 @@ def index(request):
 
 
 def post_detail(request, post_id):
-    """Страница детального просмотра публикации."""
     return render(
         request, 
         'blog/detail.html',
@@ -39,17 +41,17 @@ def post_detail(request, post_id):
 
 
 def category_posts(request, category_slug):
-    """Список публикаций конкретной категории."""
     category = get_object_or_404(
         Category,
         slug=category_slug,
         is_published=True
     )
-    
+
+    filtered_posts = Post.objects.filter(category=category)
     return render(
         request, 
         'blog/category.html', {
             'category': category,
-            'posts': get_published_posts(Post.objects.filter(category=category))
+            'posts': get_published_posts(filtered_posts)
         }
     )
