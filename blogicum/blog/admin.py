@@ -30,6 +30,7 @@ class PostAdmin(admin.ModelAdmin):
     autocomplete_fields = ('author', 'location', 'category')
     date_hierarchy = 'pub_date'
 
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     """Админка для категорий."""
@@ -39,11 +40,13 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = ('is_published',)
     list_editable = ('is_published',)
     empty_value_display = '-пусто-'
-    prepopulated_fields = {"slug": ("title",)}  # Автозаполнение slug на основе заголовка
+    prepopulated_fields = {"slug": ("title",)}
 
     def description_preview(self, obj):
-        """Обрезанное описание для списка (до 40 символов)."""
-        return (obj.description[:40] + '...') if len(obj.description) > 40 else obj.description
+        return (
+            f'{obj.description[:40]}...'
+            if len(obj.description) > 40 else obj.description
+        )
     description_preview.short_description = 'Описание'
 
 
