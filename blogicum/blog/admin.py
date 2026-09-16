@@ -19,12 +19,16 @@ class PostAdmin(admin.ModelAdmin):
     list_editable = ('category',)
     
     search_fields = ('title', 'text')
-    list_filter = ('category', 'author', 'is_published', 'location')
+    list_filter = (
+        'category', 
+        'author', 
+        'is_published', 
+        'location'
+    )
     list_display_links = ('title',)
     empty_value_display = '-пусто-'
-    autocomplete_fields = ('author', 'location', 'category')  # Удобно при большом количестве связей
-    date_hierarchy = 'pub_date'  # Навигация по датам публикации
-
+    autocomplete_fields = ('author', 'location', 'category')
+    date_hierarchy = 'pub_date'
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
